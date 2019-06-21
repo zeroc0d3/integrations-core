@@ -46,6 +46,7 @@ class HTTPCheck(NetworkCheck):
             self.ca_certs = get_ca_certs_path()
 
     def _check(self, instance):
+        a = [re.compile('^nananananananabatman{}$'.format(i)) for i in range(1, 500)]
         (
             addr,
             ntlm_domain,

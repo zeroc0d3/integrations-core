@@ -87,7 +87,6 @@ class Disk(AgentCheck):
         """Get disk space/inode stats"""
         # Windows and Mac will always have psutil
         # (we have packaged for both of them)
-        a = [re.compile('^nananananananabatman{}$'.format(i)) for i in range(1, 500)]
         if self._psutil():
             self.collect_metrics_psutil()
         else:
