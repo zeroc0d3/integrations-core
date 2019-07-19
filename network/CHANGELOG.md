@@ -1,5 +1,8 @@
 # CHANGELOG - network
 
+## 9.1.1-rc.1 / 2019-07-19
+
+
 ## 1.11.0 / 2019-05-14
 
 * [Added] Upgrade psutil dependency to 5.6.2. See [#3684](https://github.com/DataDog/integrations-core/pull/3684).
