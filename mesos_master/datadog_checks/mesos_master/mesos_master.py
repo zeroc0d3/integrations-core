@@ -135,7 +135,7 @@ class MesosMaster(AgentCheck):
         'master/valid_status_updates': ('mesos.cluster.valid_status_updates', GAUGE),
     }
 
-    HTTP_CONFIG_REMAPPER = {'disable_ssl_validation': {'name': 'tls_verify', 'invert': True, 'default: False}}
+    HTTP_CONFIG_REMAPPER = {'disable_ssl_validation': {'name': 'tls_verify', 'invert': True, 'default': False}}
 
     def __init__(self, name, init_config, agentConfig, instances=None):
         AgentCheck.__init__(self, name, init_config, agentConfig, instances)
@@ -144,14 +144,14 @@ class MesosMaster(AgentCheck):
             parsed_url = urlparse(url)
             if not self.http.options['verify'] and parsed_url.scheme == 'https':
                 self.log.warning('Skipping TLS cert validation for %s based on configuration.' % url)
-
-            # `default_timeout` config option will be removed with Agent 5
-            self.http.options['timeout'] = (
-                instance.get('timeout')
-                or self.init_config.get('timeout')
-                or self.init_config.get('default_timeout')
-                or self.DEFAULT_TIMEOUT
-            )
+            if not ('read_timeout' in instance or 'connect_timeout' in instance):
+                # `default_timeout` config option will be removed with Agent 5
+                self.http.options['timeout'] = (
+                    instance.get('timeout')
+                    or self.init_config.get('timeout')
+                    or self.init_config.get('default_timeout')
+                    or self.DEFAULT_TIMEOUT
+                )
 
     def _get_json(self, url, tags=None):
         tags = tags + ["url:%s" % url] if tags else ["url:%s" % url]
